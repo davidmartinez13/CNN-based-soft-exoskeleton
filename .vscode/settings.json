@@ -66,5 +66,9 @@
         "typeindex": "cpp",
         "typeinfo": "cpp",
         "bit": "cpp"
-    }
+    },
+    "python.autoComplete.extraPaths": [
+        "/home/david/exo_ws/devel/lib/python3/dist-packages",
+        "/opt/ros/noetic/lib/python3/dist-packages"
+    ]
 }
