@@ -1,14 +1,16 @@
 #!/usr/bin/env python
 import rospy
 import time
-from std_msgs.msg import String, UInt16, Float32, Float32MultiArray
+from std_msgs.msg import String, UInt16, Float32, Int16MultiArray, Float32MultiArray
 
 class ExoControl():
     def __init__(self, delta_t = 5):
-        self.pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
+        self.pub = rospy.Publisher('servo', Int16MultiArray, queue_size=10)
+        # self.pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
         rospy.init_node('talker', anonymous=True)
         self.rate = rospy.Rate(10) # 10hz
-        self.q_array = Float32MultiArray()
+        # self.q_array = Float32MultiArray()
+        self.q_array = Int16MultiArray()
         self.q1 = 10
         self.q2 = 10
         self.delta_t = delta_t

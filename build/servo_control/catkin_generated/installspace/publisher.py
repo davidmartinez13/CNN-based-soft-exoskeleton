@@ -1,14 +1,16 @@
 #!/usr/bin/env python3
 import rospy
 import time
-from std_msgs.msg import String, UInt16, Float32, Float32MultiArray
+from std_msgs.msg import String, UInt16, Float32, Int16MultiArray#, Float32MultiArray
 
 class ExoControl():
     def __init__(self, delta_t = 5):
-        self.pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
+        self.pub = rospy.Publisher('servo', Int16MultiArray, queue_size=10)
+        # self.pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
         rospy.init_node('talker', anonymous=True)
         self.rate = rospy.Rate(10) # 10hz
-        self.q_array = Float32MultiArray()
+        # self.q_array = Float32MultiArray()
+        self.q_array = Int16MultiArray()
         self.q1 = 10
         self.q2 = 10
         self.delta_t = delta_t
@@ -94,35 +96,35 @@ class ExoControl():
                 print('Failed to send angle: ',e)
     
 
-def deg2rad(degree):
-    return degree * 3.14159265359/180
+# def deg2rad(degree):
+#     return degree * 3.14159265359/180
 
-def rad2deg(radian):
-    return radian * (180 / 3.14159265359)   
+# def rad2deg(radian):
+#     return radian * (180 / 3.14159265359)   
 
-def talker():
-    pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
-    rospy.init_node('talker', anonymous=True)
-    rate = rospy.Rate(10) # 10hz
-    q_array = Float32MultiArray()
-    delta_t = 5
-    deg = float(input('enter staring angle'))
-    q1 = deg
-    q2 = deg
-    while not rospy.is_shutdown():
-        try:
-            q1 = delta_t + q1
-            q2 = delta_t + q2
-            q_array.data.clear()
-            q_array.data.append(q1)
-            q_array.data.append(q2)
-            rospy.loginfo(q_array.data)
-            pub.publish(q_array)
-            rate.sleep()
-            if q1>=170 or q2>=170:
-                break
-        except:
-            print('Failed to send angle')
+# def talker():
+#     pub = rospy.Publisher('servo', Float32MultiArray, queue_size=10)
+#     rospy.init_node('talker', anonymous=True)
+#     rate = rospy.Rate(10) # 10hz
+#     q_array = Float32MultiArray()
+#     delta_t = 5
+#     deg = float(input('enter staring angle'))
+#     q1 = deg
+#     q2 = deg
+#     while not rospy.is_shutdown():
+#         try:
+#             q1 = delta_t + q1
+#             q2 = delta_t + q2
+#             q_array.data.clear()
+#             q_array.data.append(q1)
+#             q_array.data.append(q2)
+#             rospy.loginfo(q_array.data)
+#             pub.publish(q_array)
+#             rate.sleep()
+#             if q1>=170 or q2>=170:
+#                 break
+#         except:
+#             print('Failed to send angle')
 if __name__ == '__main__':
     try:
         # talker()
