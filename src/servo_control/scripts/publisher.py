@@ -34,7 +34,7 @@ class ExoControl():
         elif mode == '4':
             # self.ai_mode()
             self.ai_listener()
-            self.neural_net_mode()
+            self.neural_net_mode_discrete()
 
         else :
             print('Choose a valid Mode')
@@ -60,7 +60,7 @@ class ExoControl():
         return radian * (180 / 3.14159265359)
 
     def ai_callback(self, hand_opening):
-        print('got data')
+        # print('got data')
         self.hand_opening = hand_opening.data
         
     def ai_listener(self):
@@ -94,6 +94,54 @@ class ExoControl():
             except Exception as e:
                 print('Failed to send angle: ',e)
 
+    def neural_net_mode_discrete(self):
+        print('started ai mode')
+        grasp_done = True
+        grasp_started = False
+        while not rospy.is_shutdown():
+            try:
+                if grasp_done and not grasp_started :
+                    # print(self.hand_opening)
+                    if self.hand_opening == 'xl':
+                        angle = 170
+                        grasp_done = False
+                    elif self.hand_opening == 'l':
+                        angle = 130
+                        grasp_done = False
+                    elif self.hand_opening == 'm':
+                        angle = 90
+                        grasp_done = False
+                    elif self.hand_opening == 's':
+                        angle = 50
+                        grasp_done = False
+                    else:
+                        continue
+                
+                    if not grasp_done and not grasp_started:
+                        grasp_started = True
+                        self.q1 = angle
+                        self.q2 = angle
+                        self.q_array.data.clear()
+                        self.q_array.data.append(self.q1)
+                        self.q_array.data.append(self.q2)
+                        rospy.loginfo(self.q_array.data)
+                        self.pub.publish(self.q_array)
+                        self.rate.sleep()
+
+                        time.sleep(3)
+                        self.q_array.data.clear()
+                        self.q_array.data.append(0)
+                        self.q_array.data.append(0)
+                        rospy.loginfo(self.q_array.data)
+                        self.pub.publish(self.q_array)
+                        self.rate.sleep()
+
+                        grasp_done = True
+                        grasp_started = False
+                
+            except Exception as e:
+                print('Failed to send angle: ',e)
+
     def test_mode(self):
         self.q1 = self.delta_t + self.q1
         self.q2 = self.delta_t + self.q2
@@ -120,7 +168,7 @@ class ExoControl():
             rospy.loginfo(self.q_array.data)
             self.pub.publish(self.q_array)
             self.rate.sleep()
-        time.sleep(4)
+        time.sleep(1)
 
     def command_mode_smooth(self):
         key = str(input('press enter to continue'))
