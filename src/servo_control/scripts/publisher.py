@@ -35,6 +35,7 @@ class ExoControl():
             # self.ai_mode()
             self.ai_listener()
             self.neural_net_mode_discrete()
+            self.control_func = self.test_mode
 
         else :
             print('Choose a valid Mode')
@@ -115,7 +116,12 @@ class ExoControl():
                         angle = 50
                         grasp_done = False
                     else:
-                        continue
+                        self.q_array.data.clear()
+                        self.q_array.data.append(0)
+                        self.q_array.data.append(0)
+                        rospy.loginfo(self.q_array.data)
+                        self.pub.publish(self.q_array)
+                        self.rate.sleep()
                 
                     if not grasp_done and not grasp_started:
                         grasp_started = True
@@ -127,14 +133,8 @@ class ExoControl():
                         rospy.loginfo(self.q_array.data)
                         self.pub.publish(self.q_array)
                         self.rate.sleep()
+                        time.sleep(4)
 
-                        time.sleep(3)
-                        self.q_array.data.clear()
-                        self.q_array.data.append(0)
-                        self.q_array.data.append(0)
-                        rospy.loginfo(self.q_array.data)
-                        self.pub.publish(self.q_array)
-                        self.rate.sleep()
 
                         grasp_done = True
                         grasp_started = False
