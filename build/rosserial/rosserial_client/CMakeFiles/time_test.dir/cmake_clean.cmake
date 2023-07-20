@@ -2,8 +2,11 @@ file(REMOVE_RECURSE
   "/home/david/exo_ws/devel/lib/rosserial_client/time_test"
   "/home/david/exo_ws/devel/lib/rosserial_client/time_test.pdb"
   "CMakeFiles/time_test.dir/src/ros_lib/duration.cpp.o"
+  "CMakeFiles/time_test.dir/src/ros_lib/duration.cpp.o.d"
   "CMakeFiles/time_test.dir/src/ros_lib/time.cpp.o"
+  "CMakeFiles/time_test.dir/src/ros_lib/time.cpp.o.d"
   "CMakeFiles/time_test.dir/test/time_test.cpp.o"
+  "CMakeFiles/time_test.dir/test/time_test.cpp.o.d"
 )
 
 # Per-language clean rules from dependency scanning.
